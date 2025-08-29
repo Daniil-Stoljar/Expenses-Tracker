@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import type { Expense } from "../TEMPtypes";
+
 export default function ExpensesPage() {
   return (
     <section className="rounded-xl border p-4">
