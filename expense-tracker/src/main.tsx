@@ -7,6 +7,7 @@ import Dashboard from "./Pages/Dashnoard";
 import ExpensesPage from "./Pages/ExpensesPage";
 import AddEditExpense from "./Pages/AddEditExpenses";
 import AuthForm from "./Pages/AuthForm";
+import EditExpense from "./pages/EditExpense";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "expenses", element: <ExpensesPage /> },
       { path: "expenses/new", element: <AddEditExpense /> },
+      { path: "expenses/:id/edit", element: <EditExpense /> }, // 👈 new route
       { path: "auth", element: <AuthForm /> },
     ],
   },

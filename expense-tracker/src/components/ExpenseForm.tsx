@@ -1,69 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import type { Expense } from "../TEMPtypes";
 
-interface ExpenseFormProps {
+interface Props {
   onSave: (expense: Expense) => void;
+  initialData?: Expense; // 👈 new prop
 }
 
-interface Expense {
-  amount: number;
-  category: string;
-  description: string;
-  date: string;
-}
+export default function ExpenseForm({ onSave, initialData }: Props) {
+  const [form, setForm] = useState({
+    date: new Date().toISOString().split("T")[0],
+    category: "Food",
+    description: "",
+    amount: 0,
+  });
 
-export default function ExpenseForm({ onSave }: ExpenseFormProps) {
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("Food");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  // 👇 if editing, preload data
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        date: initialData.date,
+        category: initialData.category,
+        description: initialData.description,
+        amount: initialData.amount,
+      });
+    }
+  }, [initialData]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSave({ amount: Number(amount), category, description, date });
-    setAmount("");
-    setCategory("Food");
-    setDescription("");
-    setDate(new Date().toISOString().split("T")[0]);
-  };
+    const newExpense: Expense = {
+      id: initialData?.id || crypto.randomUUID(), // 👈 keep same ID if editing
+      ...form,
+      amount: Number(form.amount),
+    };
+    onSave(newExpense);
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="rounded-xl border p-4 space-y-4">
       <input
-        type="number"
-        placeholder="Amount"
-        className="border rounded-md px-3 py-2"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        required
+        type="date"
+        name="date"
+        value={form.date}
+        onChange={handleChange}
+        className="border rounded-md px-3 py-2 text-sm w-full"
       />
       <select
-        className="border rounded-md px-3 py-2"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
+        name="category"
+        value={form.category}
+        onChange={handleChange}
+        className="border rounded-md px-3 py-2 text-sm w-full"
       >
         <option>Food</option>
         <option>Rent</option>
         <option>Travel</option>
-        <option>Shopping</option>
       </select>
       <input
-        type="date"
-        className="border rounded-md px-3 py-2"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
+        type="text"
+        name="description"
+        placeholder="Description"
+        value={form.description}
+        onChange={handleChange}
+        className="border rounded-md px-3 py-2 text-sm w-full"
       />
       <input
-        type="text"
-        placeholder="Description"
-        className="border rounded-md px-3 py-2"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        type="number"
+        name="amount"
+        placeholder="Amount"
+        value={form.amount}
+        onChange={handleChange}
+        className="border rounded-md px-3 py-2 text-sm w-full"
       />
-      <button
-        type="submit"
-        className="bg-sky-600 text-white py-2 rounded-md hover:bg-sky-700"
-      >
-        Save Expense
+      <button className="bg-sky-600 text-white px-4 py-2 rounded-md">
+        {initialData ? "Update" : "Save"}
       </button>
     </form>
   );

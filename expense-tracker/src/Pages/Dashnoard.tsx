@@ -1,5 +1,5 @@
 import { CategoryPieChart, MonthlyBarChart } from "../components/ExpenseCharts";
-import { categoryData, monthlyData } from "../mockData";
+import { categoryData, monthlyData } from "../TEMPmockData";
 
 export default function Dashboard() {
   return (

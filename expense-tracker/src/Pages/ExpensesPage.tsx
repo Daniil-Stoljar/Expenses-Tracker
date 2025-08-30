@@ -2,6 +2,31 @@ import { useState, useEffect } from "react";
 import type { Expense } from "../TEMPtypes";
 
 export default function ExpensesPage() {
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  useEffect(() => {
+    setExpenses([
+      {
+        id: "1",
+        date: "2025-08-10",
+        category: "Food",
+        description: "Groceries",
+        amount: 45,
+      },
+      {
+        id: "2",
+        date: "2025-08-09",
+        category: "Travel",
+        description: "Bus ticket",
+        amount: 5,
+      },
+    ]);
+  }, []);
+
+  function handleDelete(id: string) {
+    setExpenses(expenses.filter((e) => e.id !== id));
+  }
+
   return (
     <section className="rounded-xl border p-4">
       <div className="mb-4 flex items-center gap-3">
@@ -25,15 +50,23 @@ export default function ExpensesPage() {
           </tr>
         </thead>
         <tbody>
-          <tr className="border-b">
-            <td className="py-2">2025-08-10</td>
-            <td>Food</td>
-            <td>Groceries</td>
-            <td className="text-right">€ 45</td>
-            <td className="text-right">
-              <button className="text-sky-600">Edit</button>
-            </td>
-          </tr>
+          {expenses.map((exp) => (
+            <tr key={exp.id} className="border-b">
+              <td className="py-2">{exp.date}</td>
+              <td>{exp.category}</td>
+              <td>{exp.description}</td>
+              <td className="text-right">€ {exp.amount}</td>
+              <td className="text-right">
+                <button className="text-sky-600 mr-2">Edit</button>
+                <button
+                  className="text-red-600"
+                  onClick={() => handleDelete(exp.id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </section>
