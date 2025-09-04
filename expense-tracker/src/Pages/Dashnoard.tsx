@@ -29,28 +29,6 @@ export default function Dashboard() {
           <MonthlyBarChart data={monthlyData} />
         </div>
       </div>
-
-      <div className="rounded-xl border p-4">
-        <div className="text-sm font-medium mb-2">Recent Expenses</div>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left text-zinc-500 border-b">
-              <th className="py-2">Date</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th className="text-right">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b">
-              <td className="py-2">2025-08-10</td>
-              <td>Food</td>
-              <td>Groceries</td>
-              <td className="text-right">€ 45</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   );
 }

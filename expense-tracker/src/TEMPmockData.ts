@@ -2,7 +2,7 @@ export const categoryData = [
   { category: "Food", amount: 450 },
   { category: "Rent", amount: 700 },
   { category: "Travel", amount: 120 },
-  { category: "Shopping", amount: 500 },
+  { category: "Shopping", amount: 210 },
 ];
 
 export const monthlyData = [

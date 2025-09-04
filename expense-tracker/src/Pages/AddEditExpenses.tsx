@@ -1,20 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
+import { useExpenses } from "../context/ExpensesContext";
 import type { Expense } from "../TEMPtypes";
 
 export default function AddEditExpense() {
-  const navigate = useNavigate();
+  const { addExpense } = useExpenses();
+  const nav = useNavigate();
 
   function handleSave(expense: Expense) {
-    // In real app → save to supabase
-    console.log("Saved expense:", expense);
-
-    // Redirect back to /expenses
-    navigate("/expenses");
+    addExpense(expense);
+    nav("/expenses");
   }
 
   return (
-    <section>
+    <section className="rounded-xl border p-4">
       <h2 className="text-lg font-semibold mb-4">Add New Expense</h2>
       <ExpenseForm onSave={handleSave} />
     </section>

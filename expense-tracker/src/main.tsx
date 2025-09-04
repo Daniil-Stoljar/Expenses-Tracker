@@ -6,8 +6,9 @@ import App from "./App";
 import Dashboard from "./Pages/Dashnoard";
 import ExpensesPage from "./Pages/ExpensesPage";
 import AddEditExpense from "./Pages/AddEditExpenses";
+import EditExpense from "./Pages/EditExpense";
 import AuthForm from "./Pages/AuthForm";
-import EditExpense from "./pages/EditExpense";
+import { ExpensesProvider } from "./context/ExpensesContext";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "expenses", element: <ExpensesPage /> },
       { path: "expenses/new", element: <AddEditExpense /> },
-      { path: "expenses/:id/edit", element: <EditExpense /> }, // 👈 new route
+      { path: "expenses/:id/edit", element: <EditExpense /> },
       { path: "auth", element: <AuthForm /> },
     ],
   },
@@ -25,6 +26,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ExpensesProvider>
+      <RouterProvider router={router} />
+    </ExpensesProvider>
   </StrictMode>
 );

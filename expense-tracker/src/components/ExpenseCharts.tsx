@@ -37,8 +37,8 @@ export function CategoryPieChart({
           outerRadius={90}
           label
         >
-          {data.map((_, index) => (
-            <Cell key={index} fill={COLORS[index % COLORS.length]} />
+          {data.map((_, idx) => (
+            <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
           ))}
         </Pie>
         <Tooltip />
