@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import type { Expense } from "../TEMPtypes";
+import type { Expense } from "../types";
 
 type Ctx = {
   expenses: Expense[];

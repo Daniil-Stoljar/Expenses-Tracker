@@ -9,6 +9,7 @@ import AddEditExpense from "./Pages/AddEditExpenses";
 import EditExpense from "./Pages/EditExpense";
 import AuthForm from "./Pages/AuthForm";
 import { ExpensesProvider } from "./context/ExpensesContext";
+import { supabase } from "./lib/supabaseClient";
 
 const router = createBrowserRouter([
   {

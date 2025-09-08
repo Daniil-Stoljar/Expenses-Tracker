@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Expense } from "../TEMPtypes";
+import type { Expense } from "../types";
 
 type Props = {
   onSave: (expense: Expense) => void;

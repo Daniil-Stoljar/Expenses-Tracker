@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import { useExpenses } from "../context/ExpensesContext";
-import type { Expense } from "../TEMPtypes";
+import type { Expense } from "../types";
 
 export default function EditExpense() {
   const { id } = useParams();

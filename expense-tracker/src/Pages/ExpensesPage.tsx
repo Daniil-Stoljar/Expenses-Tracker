@@ -1,8 +1,38 @@
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
+import type { Expense } from "../types";
 import { Link } from "react-router-dom";
-import { useExpenses } from "../context/ExpensesContext";
 
 export default function ExpensesPage() {
-  const { expenses, deleteExpense } = useExpenses();
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchExpenses() {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("expenses")
+        .select("*")
+        .order("date", { ascending: false });
+      if (error) {
+        console.error("❌ Error fetching expenses:", error.message);
+      } else {
+        setExpenses(data as Expense[]);
+      }
+      setLoading(false);
+    }
+
+    fetchExpenses();
+  }, []);
+
+  async function handleDelete(id: string) {
+    const { error } = await supabase.from("expenses").delete().eq("id", id);
+    if (error) {
+      console.error("❌ Delete failed:", error.message);
+    } else {
+      setExpenses(expenses.filter((e) => e.id !== id));
+    }
+  }
 
   return (
     <section className="rounded-xl border p-4">
@@ -12,18 +42,12 @@ export default function ExpensesPage() {
           <option>Food</option>
           <option>Rent</option>
           <option>Travel</option>
-          <option>Shopping</option>
-          <option>Utilities</option>
-          <option>Health</option>
-          <option>Other</option>
         </select>
         <input type="month" className="border rounded-md px-3 py-2 text-sm" />
       </div>
 
-      {expenses.length === 0 ? (
-        <div className="p-6 text-sm text-zinc-500">
-          No expenses yet. Add one?
-        </div>
+      {loading ? (
+        <p>Loading...</p>
       ) : (
         <table className="w-full text-sm">
           <thead>
@@ -40,8 +64,8 @@ export default function ExpensesPage() {
               <tr key={exp.id} className="border-b">
                 <td className="py-2">{exp.date}</td>
                 <td>{exp.category}</td>
-                <td>{exp.description || "-"}</td>
-                <td className="text-right">€ {exp.amount.toFixed(2)}</td>
+                <td>{exp.description}</td>
+                <td className="text-right">€ {exp.amount}</td>
                 <td className="text-right">
                   <Link
                     to={`/expenses/${exp.id}/edit`}
@@ -51,7 +75,7 @@ export default function ExpensesPage() {
                   </Link>
                   <button
                     className="text-red-600"
-                    onClick={() => deleteExpense(exp.id)}
+                    onClick={() => handleDelete(exp.id)}
                   >
                     Delete
                   </button>
